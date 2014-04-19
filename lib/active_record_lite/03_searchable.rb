@@ -7,7 +7,7 @@ module Searchable
 
     obj_data = DBConnection.execute(<<-SQL, *params.values)
     SELECT
-      *
+      #{table_name}.*
     FROM
       #{table_name}
     WHERE
