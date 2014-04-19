@@ -4,17 +4,20 @@ require_relative '02_sql_object'
 module Searchable
   def where(params)
     where_line = params.keys.map { |key| "#{key} = ?" }.join(" AND ")
-    DBConnection.execute(<<-SQL, params.values)
+
+    obj_data = DBConnection.execute(<<-SQL, *params.values)
     SELECT
       *
     FROM
-      self.class.table_name
+      #{table_name}
     WHERE
-      where_line
+      #{where_line}
     SQL
+
+    parse_all(obj_data)
   end
 end
 
 class SQLObject
-  include Searchable
+  extend Searchable
 end
