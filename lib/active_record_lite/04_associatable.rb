@@ -44,18 +44,19 @@ module Associatable
       p_key = belongs_to_opts.send(:primary_key)
       p "Foreign key is: #{f_key}"
       m_class = belongs_to_opts.model_class
-      m_class.where( :primary_key => f_key ).first
+      m_class.where( p_key => self.send(f_key) ).first
     end
   end
 
   def has_many(name, options = {})
-    belongs_to_opts = BelongsToOptions.new(name, options)
+    belongs_to_opts = HasManyOptions.new(name, self.to_s, options)
 
     define_method name do
       f_key = belongs_to_opts.send(:foreign_key)
+      p_key = belongs_to_opts.send(:primary_key)
       p "Foreign key is: #{f_key}"
       m_class = belongs_to_opts.model_class
-      m_class.where(:primary_key => f_key).first
+      m_class.where( f_key => self.send(p_key) )
     end
   end
 
