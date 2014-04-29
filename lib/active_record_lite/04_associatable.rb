@@ -23,6 +23,7 @@ class BelongsToOptions < AssocOptions
     @foreign_key = options[:foreign_key] || name.to_s.downcase.singularize.concat("_id").to_sym
     @primary_key = options[:primary_key] || :id
     @class_name =  options[:class_name] || name.to_s.gsub("_", "").singularize.camelcase
+    ""
   end
 end
 
@@ -38,10 +39,11 @@ module Associatable
   # Phase IVb
   def belongs_to(name, options = {})
     belongs_to_opts = BelongsToOptions.new(name, options)
+    self.assoc_options[name] = belongs_to_opts
 
     define_method name do
-      f_key = belongs_to_opts.send(:foreign_key)
-      p_key = belongs_to_opts.send(:primary_key)
+      f_key = belongs_to_opts.foreign_key
+      p_key = belongs_to_opts.primary_key
       p "Foreign key is: #{f_key}"
       m_class = belongs_to_opts.model_class
       m_class.where( p_key => self.send(f_key) ).first
@@ -52,8 +54,8 @@ module Associatable
     belongs_to_opts = HasManyOptions.new(name, self.to_s, options)
 
     define_method name do
-      f_key = belongs_to_opts.send(:foreign_key)
-      p_key = belongs_to_opts.send(:primary_key)
+      f_key = belongs_to_opts.foreign_key
+      p_key = belongs_to_opts.primary_key
       p "Foreign key is: #{f_key}"
       m_class = belongs_to_opts.model_class
       m_class.where( f_key => self.send(p_key) )
@@ -62,45 +64,10 @@ module Associatable
 
   def assoc_options
     # Wait to implement this in Phase V. Modify `belongs_to`, too.
+    @assoc_options ||= {}
   end
 end
 
 class SQLObject
   extend Associatable
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
