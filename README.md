@@ -1,8 +1,7 @@
-Fkotsian's cloned version from base: https://github.com/appacademy-solutions/active_record_lite
-
-Last Modified: 4/18/14
+Phonograph
+===============================================================
 By: Frank Kotsianas (Github: fkotsian)
 
-After the project, you can review the solution here:
+This is a recreation of basic Rails ActiveRecord functionality in sole Ruby. 
+It takes advantage of method_missing and other metaprogramming techniques to implement custom SQL queries, as well as ActiveRecord associations.
 
-* https://github.com/appacademy-solutions/active_record_lite/tree/solution
